@@ -33,11 +33,13 @@ mlflow>=2.7.0
 dvc>=3.0.0
 dvc-gdrive>=2.20.0
 
-# ---- API ----
+# ---- API & Web UI ----
 fastapi>=0.103.0
 uvicorn[standard]>=0.23.0
 python-multipart>=0.0.6
 pydantic>=2.0.0
+gradio>=4.0.0
+streamlit>=1.28.0
 httpx>=0.24.0                 # Pour les tests
 
 # ---- Monitoring ----
