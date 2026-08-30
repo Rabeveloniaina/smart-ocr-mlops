@@ -38,7 +38,7 @@ use_beam_search = st.checkbox("Activer Beam Search (Décodage avancé)", value=F
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption="Image importée", use_container_width=True)
+    st.image(image, caption="Image importée", width="stretch")
 
     if st.button("⚡ Transcrire l'image", type="primary"):
         with st.spinner("Transcription en cours..."):
@@ -51,7 +51,8 @@ if uploaded_file is not None:
             
             st.subheader("Texte reconnu :")
             st.text_area(
-                label="",
+                label="Résultat de la transcription",
+                label_visibility="collapsed",
                 value=result.get("text", "(Aucun texte détecté)"),
                 height=150
             )
