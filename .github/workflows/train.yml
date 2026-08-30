@@ -1,0 +1,94 @@
+name: 🧠 Train & Evaluate (Manual DVC Pipeline)
+
+on:
+  workflow_dispatch:
+    inputs:
+      num_samples:
+        description: "Nombre d'images à générer"
+        required: false
+        default: "2000"
+      epochs:
+        description: "Nombre d'epochs d'entraînement (override params.yaml)"
+        required: false
+        default: "30"
+
+jobs:
+  train_pipeline:
+    name: 🏋️ DVC Pipeline - Generate → Train → Evaluate
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: 🐍 Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: 🔧 Install System Dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y libgl1 libglib2.0-0 libfontconfig1 fonts-dejavu-core
+
+      - name: 📦 Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🔍 Verify CRNN Tensor Dimensions (T >= 32)
+        run: |
+          python -c "
+          import torch
+          from src.models.crnn import CRNN
+          m = CRNN.from_params()
+          x = torch.randn(1, 1, 32, 256)
+          out = m(x)
+          T, B, C = out.shape
+          print(f'CRNN Output T={T}, B={B}, C={C}')
+          assert T >= 32, f'SÉQUENCE TEMPORELLE TROP COURTE: T={T} < 32 !'
+          print('✅ Dimension temporelle CTC OK (T >= 32)')
+          "
+
+      - name: 🖊️ Stage 1 - Générer les données manuscrites
+        run: |
+          python scripts/generate_synthetic_data.py
+          echo "✅ Données générées"
+
+      - name: ⚙️ Stage 2 - Prétraitement des images
+        run: |
+          PYTHONPATH=. python src/preprocessing.py
+          echo "✅ Prétraitement terminé"
+
+      - name: ✂️ Stage 3 - Split Train/Val/Test
+        run: |
+          python scripts/split_dataset.py
+          echo "✅ Split terminé"
+
+      - name: 🏋️ Stage 4 - Entraînement CRNN + MLflow
+        env:
+          MLFLOW_ALLOW_FILE_STORE: "true"
+        run: |
+          PYTHONPATH=. python src/train.py
+          echo "✅ Entraînement terminé"
+
+      - name: 📊 Stage 5 - Évaluation du modèle
+        run: |
+          PYTHONPATH=. python src/evaluate.py
+          cat models/evaluation_metrics.json
+          echo "✅ Évaluation terminée"
+
+      - name: 📤 Commit & Push modèle + métriques vers GitHub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add models/best_model.pt models/evaluation_metrics.json models/metrics.json models/model_metadata.json || true
+          git diff --cached --quiet && echo "Rien à committer" || (
+            git commit -m "chore(model): auto-retrain CRNN - $(date '+%Y-%m-%d %H:%M') [skip ci]"
+            git push origin HEAD
+          )

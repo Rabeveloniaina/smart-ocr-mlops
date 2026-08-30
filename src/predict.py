@@ -95,22 +95,32 @@ class OCRPredictor:
         if raw_img is None:
             raise ValueError("Could not read input image")
 
+        start_time = cv2.getTickCount()
+        
         if self.easy_reader is not None:
             try:
                 ocr_results = self.easy_reader.readtext(raw_img)
                 if ocr_results:
                     lines_text = []
                     confs = []
+                    boxes = []
                     for bbox, text, prob in ocr_results:
                         clean_t = text.strip()
                         if clean_t:
                             lines_text.append(clean_t)
                             confs.append(prob * 100)
+
+                            pts = [[int(pt[0]), int(pt[1])] for pt in bbox] if isinstance(bbox, (list, tuple, np.ndarray)) else []
+                            boxes.append({"text": clean_t, "confidence": round(float(prob * 100), 1), "box": pts})
                     if lines_text:
+                        elapsed_ms = (cv2.getTickCount() - start_time) / cv2.getTickFrequency() * 1000.0
                         return {
                             "text": "\n".join(lines_text),
                             "confidence": round(float(np.mean(confs)), 2),
-                            "num_lines": len(lines_text)
+                            "num_lines": len(lines_text),
+                            "latency_ms": round(elapsed_ms, 1),
+                            "engine": "EasyOCR (ResNet + LSTM + CTC)",
+                            "details": boxes
                         }
             except Exception as e:
                 logger.warning(f"EasyOCR error, using CRNN: {e}")
@@ -122,7 +132,7 @@ class OCRPredictor:
         confidences = []
 
         for line_img in lines:
-            img_processed = self.preprocessor.preprocess_image(line_img)
+            img_processed = self.preprocessor.preprocess_image(line_img, enhance_contrast=True)
             img_norm = img_processed.astype(np.float32) / 255.0
             tensor = torch.from_numpy(img_norm).unsqueeze(0).unsqueeze(0)
             tensor = (tensor - 0.5) / 0.5
@@ -141,18 +151,22 @@ class OCRPredictor:
                 predicted_texts.append(res.text.strip())
                 confidences.append(res.confidence)
 
+        elapsed_ms = (cv2.getTickCount() - start_time) / cv2.getTickFrequency() * 1000.0
         final_text = "\n".join(predicted_texts) if predicted_texts else ""
         avg_confidence = float(np.mean(confidences)) if confidences else 0.0
 
         return {
             "text": final_text,
             "confidence": round(avg_confidence, 2),
-            "num_lines": len(lines)
+            "num_lines": len(lines),
+            "latency_ms": round(elapsed_ms, 1),
+            "engine": "Custom CRNN (PyTorch + CTC)",
+            "details": [{"text": t, "confidence": c} for t, c in zip(predicted_texts, confidences)]
         }
 
 
 if __name__ == "__main__":
     predictor = OCRPredictor()
-    dummy_img = np.ones((32, 128), dtype=np.uint8) * 255
+    dummy_img = np.ones((32, 256), dtype=np.uint8) * 255
     res = predictor.predict_image(dummy_img)
     print(res)

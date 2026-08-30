@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torchvision.models as models
-from typing import Tuple, Optional
+from typing import Optional
 import yaml
 
 
@@ -22,6 +22,16 @@ class CNN_FeatureExtractor(nn.Module):
             resnet.conv1 = nn.Conv2d(
                 1, 64, kernel_size=7, stride=2, padding=3, bias=False
             )
+
+        if hasattr(resnet.layer3[0], "conv1"):
+            resnet.layer3[0].conv1.stride = (2, 1)
+        if hasattr(resnet.layer3[0], "downsample") and resnet.layer3[0].downsample is not None:
+            resnet.layer3[0].downsample[0].stride = (2, 1)
+
+        if hasattr(resnet.layer4[0], "conv1"):
+            resnet.layer4[0].conv1.stride = (2, 1)
+        if hasattr(resnet.layer4[0], "downsample") and resnet.layer4[0].downsample is not None:
+            resnet.layer4[0].downsample[0].stride = (2, 1)
 
         self.features = nn.Sequential(
             resnet.conv1,
@@ -126,7 +136,6 @@ class CRNN(nn.Module):
         B, C, H, W = features.size()
         features = features.squeeze(2)
         features = features.permute(2, 0, 1)
-
         features = self.projection(features)
         logits = self.rnn(features)
         log_probs = nn.functional.log_softmax(logits, dim=2)
@@ -140,7 +149,6 @@ class CRNN(nn.Module):
         params = load_params(params_path)
         charset = params["data"]["charset"]
         num_classes = len(charset) + 1
-
         return CRNN(
             num_classes=num_classes,
             img_height=params["data"]["image_height"],

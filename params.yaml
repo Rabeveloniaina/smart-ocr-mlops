@@ -3,7 +3,7 @@ data:
   processed_dir: "data/processed"
   splits_dir: "data/splits"
   image_height: 32
-  image_width: 128
+  image_width: 256
   train_ratio: 0.8
   val_ratio: 0.1
   test_ratio: 0.1
@@ -32,13 +32,13 @@ model:
   pretrained_backbone: true
 
 training:
-  epochs: 10
-  batch_size: 16
-  learning_rate: 0.001
+  epochs: 30
+  batch_size: 32
+  learning_rate: 0.0005
   weight_decay: 0.0001
   optimizer: "adam"
   scheduler: "cosine"
-  early_stopping_patience: 4
+  early_stopping_patience: 8
   gradient_clip: 5.0
   checkpoint_dir: "models/checkpoints"
   best_model_path: "models/best_model.pt"

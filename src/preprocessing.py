@@ -17,7 +17,7 @@ class ImagePreprocessor:
     def __init__(
         self,
         target_height: int = 32,
-        target_width: int = 128,
+        target_width: int = 256,
         denoise: bool = True
     ):
         self.target_height = target_height
@@ -38,7 +38,7 @@ class ImagePreprocessor:
 
         blur = cv2.GaussianBlur(gray, (5, 5), 0)
         _, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-        
+
         proj = np.sum(thresh, axis=1)
         max_proj = np.max(proj) if len(proj) > 0 else 0
         if max_proj == 0:
@@ -59,24 +59,24 @@ class ImagePreprocessor:
                 end_y = min(h, y + 3)
                 if end_y - start_y >= 12:
                     line_ranges.append((start_y, end_y))
-        
+
         if in_line and (h - start_y >= 12):
             line_ranges.append((start_y, h))
 
         if not line_ranges:
             return [gray]
 
-        line_crops = []
-        for sy, ey in line_ranges:
-            crop = gray[sy:ey, :]
-            line_crops.append(crop)
-        return line_crops
+        return [gray[sy:ey, :] for sy, ey in line_ranges]
 
-    def preprocess_image(self, image: np.ndarray) -> np.ndarray:
+    def preprocess_image(self, image: np.ndarray, enhance_contrast: bool = True) -> np.ndarray:
         gray = self.to_grayscale(image)
 
         if self.denoise:
             gray = cv2.fastNlMeansDenoising(gray, None, h=5, templateWindowSize=7, searchWindowSize=21)
+
+        if enhance_contrast:
+            clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+            gray = clahe.apply(gray)
 
         h, w = gray.shape
         if h == 0 or w == 0:
@@ -86,14 +86,12 @@ class ImagePreprocessor:
         new_w = int(self.target_height * aspect_ratio)
 
         if new_w > self.target_width:
-            resized = cv2.resize(gray, (self.target_width, self.target_height), interpolation=cv2.INTER_AREA)
-            final_image = resized
+            return cv2.resize(gray, (self.target_width, self.target_height), interpolation=cv2.INTER_AREA)
         else:
             resized = cv2.resize(gray, (new_w, self.target_height), interpolation=cv2.INTER_AREA)
             final_image = np.ones((self.target_height, self.target_width), dtype=np.uint8) * 255
             final_image[:, :new_w] = resized
-
-        return final_image
+            return final_image
 
     def preprocess_from_path(self, image_path: str) -> np.ndarray:
         img = cv2.imread(str(image_path))
@@ -113,13 +111,12 @@ def run_preprocessing_pipeline(params_path: str = "params.yaml"):
     params = load_params(params_path)
     raw_dir = Path(params["data"]["raw_dir"])
     processed_dir = Path(params["data"]["processed_dir"])
-    
+
     target_h = params["data"]["image_height"]
     target_w = params["data"]["image_width"]
 
     raw_images_dir = raw_dir / "images"
     raw_labels_path = raw_dir / "labels.json"
-    
     out_images_dir = processed_dir / "images"
     out_images_dir.mkdir(parents=True, exist_ok=True)
     out_labels_path = processed_dir / "labels.json"
@@ -139,11 +136,9 @@ def run_preprocessing_pipeline(params_path: str = "params.yaml"):
         src_path = raw_images_dir / filename
         if not src_path.exists():
             continue
-
         try:
             processed_img = preprocessor.preprocess_from_path(str(src_path))
-            dest_path = out_images_dir / filename
-            cv2.imwrite(str(dest_path), processed_img)
+            cv2.imwrite(str(out_images_dir / filename), processed_img)
             processed_labels[filename] = text
         except Exception as e:
             logger.error(f"Error processing {filename}: {e}")
