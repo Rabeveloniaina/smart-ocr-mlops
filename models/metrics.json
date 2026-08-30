@@ -1,0 +1,6 @@
+{
+  "best_val_cer": 0.9392,
+  "final_train_loss": 0.22847182542085648,
+  "total_epochs": 5,
+  "mlflow_run_id": "9b80c61b5ab14e28b3b2f6b6f2320526"
+}

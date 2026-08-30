@@ -1,0 +1,49 @@
+{
+  "cer": 0.9412,
+  "wer": 1.0,
+  "accuracy": 0.0,
+  "avg_confidence": 6.89,
+  "samples_evaluated": 50,
+  "predictions_sample": [
+    {
+      "target": "Network 2026",
+      "predicted": "2t"
+    },
+    {
+      "target": "Learning",
+      "predicted": "2t"
+    },
+    {
+      "target": "Data Bonjour",
+      "predicted": "2t"
+    },
+    {
+      "target": "Learning",
+      "predicted": "2t"
+    },
+    {
+      "target": "Serveur",
+      "predicted": "2t"
+    },
+    {
+      "target": "Intelligence",
+      "predicted": "2t"
+    },
+    {
+      "target": "Learning",
+      "predicted": "2t"
+    },
+    {
+      "target": "MLOps",
+      "predicted": "2t"
+    },
+    {
+      "target": "Artificielle Validation",
+      "predicted": "2t"
+    },
+    {
+      "target": "Deep Intelligence",
+      "predicted": "2t"
+    }
+  ]
+}

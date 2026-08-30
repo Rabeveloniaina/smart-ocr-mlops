@@ -1,0 +1,87 @@
+stages:
+  generate_data:
+    cmd: python scripts/generate_synthetic_data.py
+    deps:
+      - scripts/generate_synthetic_data.py
+      - params.yaml
+    params:
+      - data.charset
+      - data.image_height
+      - data.image_width
+    outs:
+      - data/raw:
+          cache: true
+          persist: true
+
+  preprocess:
+    cmd: python src/preprocessing.py
+    deps:
+      - src/preprocessing.py
+      - data/raw
+      - params.yaml
+    params:
+      - data.image_height
+      - data.image_width
+      - augmentation
+    outs:
+      - data/processed:
+          cache: true
+
+  split_data:
+    cmd: python scripts/split_dataset.py
+    deps:
+      - scripts/split_dataset.py
+      - data/processed
+      - params.yaml
+    params:
+      - data.train_ratio
+      - data.val_ratio
+      - data.test_ratio
+      - training.seed
+    outs:
+      - data/splits:
+          cache: true
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - src/models/crnn.py
+      - src/models/ctc_decoder.py
+      - src/data/dataset.py
+      - data/splits
+      - params.yaml
+    params:
+      - model
+      - training
+      - data.charset
+      - data.image_height
+      - data.image_width
+    outs:
+      - models/best_model.pt:
+          cache: true
+      - models/model_metadata.json:
+          cache: false
+    metrics:
+      - models/metrics.json:
+          cache: false
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - src/models/crnn.py
+      - src/models/ctc_decoder.py
+      - models/best_model.pt
+      - data/splits
+      - params.yaml
+    params:
+      - evaluation
+      - data.charset
+    metrics:
+      - models/evaluation_metrics.json:
+          cache: false
+
+metrics:
+  - models/metrics.json
+  - models/evaluation_metrics.json

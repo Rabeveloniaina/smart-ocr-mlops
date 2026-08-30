@@ -1,0 +1,10 @@
+{
+  "model_name": "CRNN",
+  "backbone": "resnet18",
+  "version": "1.0.0",
+  "trained_at": "2026-08-30 11:31:39",
+  "dataset": "IAM / Synthetic OCR",
+  "best_cer": "93.92%",
+  "mlflow_run_id": "9b80c61b5ab14e28b3b2f6b6f2320526",
+  "status": "production-ready"
+}

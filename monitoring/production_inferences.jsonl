@@ -1,0 +1,23 @@
+{"timestamp": 1788076860.3504822, "datetime": "2026-08-30 11:01:00", "filename": "test_sample.png", "text_length": 2, "num_words": 1, "confidence": 1.49, "latency_ms": 241.63150787353516}
+{"timestamp": 1788076880.9693012, "datetime": "2026-08-30 11:01:20", "filename": "Pipline IA complet.jpeg", "text_length": 2, "num_words": 1, "confidence": 1.59, "latency_ms": 1279.7839641571045}
+{"timestamp": 1788076941.3606877, "datetime": "2026-08-30 11:02:21", "filename": "images (1).png", "text_length": 1, "num_words": 1, "confidence": 0.0, "latency_ms": 233.77537727355957}
+{"timestamp": 1788077493.0856583, "datetime": "2026-08-30 11:11:33", "filename": "images (1).png", "text_length": 1, "num_words": 1, "confidence": 1.57, "latency_ms": 300.9068965911865}
+{"timestamp": 1788077500.6296413, "datetime": "2026-08-30 11:11:40", "filename": "images (1).png", "text_length": 1, "num_words": 1, "confidence": 0.0, "latency_ms": 237.3340129852295}
+{"timestamp": 1788077503.3116353, "datetime": "2026-08-30 11:11:43", "filename": "images (1).png", "text_length": 1, "num_words": 1, "confidence": 0.0, "latency_ms": 313.0929470062256}
+{"timestamp": 1788077523.7245965, "datetime": "2026-08-30 11:12:03", "filename": "images (1).png", "text_length": 1, "num_words": 1, "confidence": 0.0, "latency_ms": 243.29328536987305}
+{"timestamp": 1788077526.5978925, "datetime": "2026-08-30 11:12:06", "filename": "images (1).png", "text_length": 1, "num_words": 1, "confidence": 0.0, "latency_ms": 302.243709564209}
+{"timestamp": 1788077527.7986157, "datetime": "2026-08-30 11:12:07", "filename": "images (1).png", "text_length": 1, "num_words": 1, "confidence": 0.0, "latency_ms": 285.8469486236572}
+{"timestamp": 1788077744.1332088, "datetime": "2026-08-30 11:15:44", "filename": "images (1).png", "text_length": 1, "num_words": 1, "confidence": 0.0, "latency_ms": 491.6808605194092}
+{"timestamp": 1788077871.2834873, "datetime": "2026-08-30 11:17:51", "filename": "images (1).png", "text_length": 1, "num_words": 1, "confidence": 0.0, "latency_ms": 223.35219383239746}
+{"timestamp": 1788078409.3143454, "datetime": "2026-08-30 11:26:49", "filename": "test_sample.png", "text_length": 2, "num_words": 1, "confidence": 20.24, "latency_ms": 94.06614303588867}
+{"timestamp": 1788078489.178234, "datetime": "2026-08-30 11:28:09", "filename": "images (1).png", "text_length": 89, "num_words": 18, "confidence": 39.39, "latency_ms": 1831.2246799468994}
+{"timestamp": 1788078601.806423, "datetime": "2026-08-30 11:30:01", "filename": "images (1).png", "text_length": 89, "num_words": 18, "confidence": 39.39, "latency_ms": 1053.4639358520508}
+{"timestamp": 1788078647.2506444, "datetime": "2026-08-30 11:30:47", "filename": "ENS.png", "text_length": 4, "num_words": 1, "confidence": 34.19, "latency_ms": 1566.9686794281006}
+{"timestamp": 1788078652.8023248, "datetime": "2026-08-30 11:30:52", "filename": "ENS.png", "text_length": 4, "num_words": 1, "confidence": 32.87, "latency_ms": 1546.5142726898193}
+{"timestamp": 1788078971.2746367, "datetime": "2026-08-30 11:36:11", "filename": "test_sample.png", "text_length": 4, "num_words": 1, "confidence": 62.3, "latency_ms": 225.74162483215332}
+{"timestamp": 1788081557.1499426, "datetime": "2026-08-30 12:19:17", "filename": "images (1).png", "text_length": 514, "num_words": 89, "confidence": 11.38, "latency_ms": 12954.616069793701}
+{"timestamp": 1788081778.6396863, "datetime": "2026-08-30 12:22:58", "filename": "Capture d'écran 2026-08-30 122244.png", "text_length": 25, "num_words": 3, "confidence": 52.15, "latency_ms": 1288.581371307373}
+{"timestamp": 1788082070.022143, "datetime": "2026-08-30 12:27:50", "filename": "ENS.png", "text_length": 28, "num_words": 8, "confidence": 32.1, "latency_ms": 9975.363969802856}
+{"timestamp": 1788082112.7511365, "datetime": "2026-08-30 12:28:32", "filename": "images (1).png", "text_length": 514, "num_words": 89, "confidence": 11.38, "latency_ms": 18943.27688217163}
+{"timestamp": 1788082180.2962303, "datetime": "2026-08-30 12:29:40", "filename": "images (1).png", "text_length": 514, "num_words": 89, "confidence": 11.38, "latency_ms": 11628.70979309082}
+{"timestamp": 1788087004.7004335, "datetime": "2026-08-30 13:50:04", "filename": "test_sample.png", "text_length": 4, "num_words": 1, "confidence": 62.3, "latency_ms": 428.0505180358887}

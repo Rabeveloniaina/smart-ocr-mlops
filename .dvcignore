@@ -1,0 +1,17 @@
+# DVC Ignore
+.git
+.hg
+.svn
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints
+.pytest_cache
+.coverage
+htmlcov
+.env
+.venv
+env/
+venv/
+monitoring/reports/

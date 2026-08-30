@@ -1,0 +1,77 @@
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  splits_dir: "data/splits"
+  image_height: 32
+  image_width: 128
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+  charset: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .,;:!?'-"
+  num_workers: 0
+
+augmentation:
+  enabled: true
+  rotation_range: 5
+  width_shift: 0.05
+  height_shift: 0.05
+  zoom_range: 0.1
+  brightness_range: [0.8, 1.2]
+  noise_std: 0.01
+  elastic_transform: true
+  elastic_alpha: 50
+  elastic_sigma: 5
+
+model:
+  name: "CRNN"
+  backbone: "resnet18"
+  rnn_hidden_size: 256
+  rnn_num_layers: 2
+  rnn_dropout: 0.3
+  use_attention: false
+  pretrained_backbone: true
+
+training:
+  epochs: 10
+  batch_size: 16
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: "adam"
+  scheduler: "cosine"
+  early_stopping_patience: 4
+  gradient_clip: 5.0
+  checkpoint_dir: "models/checkpoints"
+  best_model_path: "models/best_model.pt"
+  seed: 42
+
+evaluation:
+  metrics: ["cer", "wer", "accuracy"]
+  beam_width: 5
+  max_text_length: 100
+
+mlflow:
+  experiment_name: "smart-ocr-manuscrit"
+  tracking_uri: "mlruns"
+  registered_model_name: "smart-ocr-crnn"
+  artifact_location: "mlruns"
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  max_image_size_mb: 10
+  confidence_threshold: 0.5
+  model_cache_ttl: 3600
+
+monitoring:
+  drift_threshold: 0.05
+  report_dir: "monitoring/reports"
+  metrics_store_path: "monitoring/metrics_store.json"
+  check_interval_hours: 24
+  min_samples_for_drift: 100
+  retraining_cer_threshold: 0.15
+
+retraining:
+  enabled: true
+  trigger: "drift_detected"
+  min_new_samples: 50
+  improvement_threshold: 0.02

@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # -----------------------------------------------------------
+  # 1. API REST Principale (FastAPI)
+  # -----------------------------------------------------------
+  ocr-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart_ocr_api
+    ports:
+      - "8000:8000"
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow-server:5000
+    volumes:
+      - ./models:/app/models
+      - ./monitoring:/app/monitoring
+      - ./params.yaml:/app/params.yaml
+    restart: unless-stopped
+    depends_on:
+      - mlflow-server
+    networks:
+      - mlops-network
+
+  # -----------------------------------------------------------
+  # 2. Serveur de Tracking MLflow
+  # -----------------------------------------------------------
+  mlflow-server:
+    image: ghcr.io/mlflow/mlflow:v2.10.0
+    container_name: smart_ocr_mlflow
+    ports:
+      - "5000:5000"
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:///mlflow.db
+      --default-artifact-root /mlflow/artifacts
+      --host 0.0.0.0
+      --port 5000
+    volumes:
+      - ./mlruns:/mlflow/artifacts
+      - ./mlflow_db:/mlflow
+    restart: unless-stopped
+    networks:
+      - mlops-network
+
+  # -----------------------------------------------------------
+  # 3. Serveur de Rapports Monitoring (Evidently AI)
+  # -----------------------------------------------------------
+  monitoring-ui:
+    image: python:3.10-slim
+    container_name: smart_ocr_monitoring_ui
+    working_dir: /app
+    volumes:
+      - ./monitoring/reports:/app/reports
+    command: python -m http.server 8085 --directory /app/reports
+    ports:
+      - "8085:8085"
+    restart: unless-stopped
+    networks:
+      - mlops-network
+
+networks:
+  mlops-network:
+    driver: bridge
