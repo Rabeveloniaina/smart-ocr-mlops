@@ -12,7 +12,7 @@ opencv-python-headless>=4.8.0
 Pillow>=10.0.0
 albumentations>=1.3.0
 scikit-image>=0.21.0
-imgaug>=0.4.0
+# imgaug>=0.4.0  # Dev only - incompatible with Python 3.14
 
 # ---- OCR & Text Processing ----
 easyocr>=1.7.0
@@ -65,4 +65,4 @@ requests>=2.31.0
 aiofiles>=23.0.0
 
 # ---- Génération de données synthétiques (fallback) ----
-trdg>=1.8.0                   # TextRecognitionDataGenerator
+# trdg>=1.8.0  # Désactivé: arabic-reshaper==2.1.3 yanked de PyPI
