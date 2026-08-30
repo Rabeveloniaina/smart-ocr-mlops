@@ -264,11 +264,11 @@ with col_input:
 
     if uploaded_file is not None:
         image_to_process = Image.open(uploaded_file).convert("RGB")
-        st.image(image_to_process, caption="Document Téléversé", use_column_width=True)
+        st.image(image_to_process, caption="Document Téléversé", use_container_width=True)
     elif sample_img is not None:
         try:
             image_to_process = Image.open(sample_img).convert("RGB")
-            st.image(image_to_process, caption=f"Exemple : {sample_img}", use_column_width=True)
+            st.image(image_to_process, caption=f"Exemple : {sample_img}", use_container_width=True)
         except Exception as e:
             st.warning("Exemple non disponible sur cette instance.")
 
