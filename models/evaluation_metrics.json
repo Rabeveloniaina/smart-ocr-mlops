@@ -1,49 +1,49 @@
 {
-  "cer": 0.7496,
-  "wer": 0.9758,
-  "accuracy": 0.02,
-  "avg_confidence": 9.99,
+  "cer": 0.169,
+  "wer": 0.425,
+  "accuracy": 0.575,
+  "avg_confidence": 92.53,
   "samples_evaluated": 200,
   "predictions_sample": [
     {
-      "target": "Prediction OK",
-      "predicted": "Peion OK"
+      "target": "60",
+      "predicted": "60"
     },
     {
-      "target": "Algorithme Paris",
-      "predicted": "Pene Sor"
+      "target": "50",
+      "predicted": "50"
     },
     {
-      "target": "MLOps Pipeline",
-      "predicted": "M Doe"
+      "target": "10",
+      "predicted": "10"
     },
     {
-      "target": "Mthode",
-      "predicted": "Dae"
+      "target": "007",
+      "predicted": "07"
     },
     {
-      "target": "2024",
-      "predicted": "202"
+      "target": "001",
+      "predicted": "01"
     },
     {
-      "target": "Intelligence A",
-      "predicted": "Peien K"
+      "target": "999",
+      "predicted": "9"
     },
     {
-      "target": "42",
-      "predicted": "42"
+      "target": "80",
+      "predicted": "80"
     },
     {
-      "target": "Lettre",
-      "predicted": "Dr"
+      "target": "80",
+      "predicted": "80"
     },
     {
-      "target": "Prix Invoice",
-      "predicted": "De"
+      "target": "80",
+      "predicted": "80"
     },
     {
-      "target": "3.14",
-      "predicted": "4.14"
+      "target": "456",
+      "predicted": "456"
     }
   ]
 }
