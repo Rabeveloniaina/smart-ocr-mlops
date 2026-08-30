@@ -1,49 +1,49 @@
 {
-  "cer": 0.9412,
-  "wer": 1.0,
-  "accuracy": 0.0,
-  "avg_confidence": 6.89,
-  "samples_evaluated": 50,
+  "cer": 0.7496,
+  "wer": 0.9758,
+  "accuracy": 0.02,
+  "avg_confidence": 9.99,
+  "samples_evaluated": 200,
   "predictions_sample": [
     {
-      "target": "Network 2026",
-      "predicted": "2t"
+      "target": "Prediction OK",
+      "predicted": "Peion OK"
     },
     {
-      "target": "Learning",
-      "predicted": "2t"
+      "target": "Algorithme Paris",
+      "predicted": "Pene Sor"
     },
     {
-      "target": "Data Bonjour",
-      "predicted": "2t"
+      "target": "MLOps Pipeline",
+      "predicted": "M Doe"
     },
     {
-      "target": "Learning",
-      "predicted": "2t"
+      "target": "Mthode",
+      "predicted": "Dae"
     },
     {
-      "target": "Serveur",
-      "predicted": "2t"
+      "target": "2024",
+      "predicted": "202"
     },
     {
-      "target": "Intelligence",
-      "predicted": "2t"
+      "target": "Intelligence A",
+      "predicted": "Peien K"
     },
     {
-      "target": "Learning",
-      "predicted": "2t"
+      "target": "42",
+      "predicted": "42"
     },
     {
-      "target": "MLOps",
-      "predicted": "2t"
+      "target": "Lettre",
+      "predicted": "Dr"
     },
     {
-      "target": "Artificielle Validation",
-      "predicted": "2t"
+      "target": "Prix Invoice",
+      "predicted": "De"
     },
     {
-      "target": "Deep Intelligence",
-      "predicted": "2t"
+      "target": "3.14",
+      "predicted": "4.14"
     }
   ]
 }
